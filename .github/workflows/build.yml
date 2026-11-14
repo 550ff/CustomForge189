@@ -1,0 +1,48 @@
+name: Build Custom Forge 1.8.9
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 8 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 8
+
+      - name: Setup Gradle Wrapper
+        working-directory: forge
+        run: chmod +x gradlew
+
+      - name: Setup CI Workspace
+        working-directory: forge
+        run: ./gradlew setupCIWorkspace --no-daemon
+
+      - name: Build
+        working-directory: forge
+        run: ./gradlew build --no-daemon
+
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forge-1.8.9-build
+          path: forge/build/libs/*.jar
+          if-no-files-found: error
+
+      - name: Upload Version JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forge-1.8.9-json
+          path: forge/build/jsons/*.json
+          if-no-files-found: ignore
