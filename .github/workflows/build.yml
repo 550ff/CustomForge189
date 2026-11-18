@@ -19,6 +19,18 @@ jobs:
           distribution: temurin
           java-version: 8
 
+      - name: Download Minecraft 1.8.9 version JSON
+        run: |
+          # ForgeGradle 2.1 needs the vanilla 1.8.9 version.json in the cache
+          # Try multiple sources in case Mojang redirects are blocked
+          mkdir -p ~/.gradle/caches/minecraft/versions/1.8.9
+
+          # First try the version.json in the repo
+          if [ -f "forge/jsons/1.8.9.json" ]; then
+            cp forge/jsons/1.8.9.json ~/.gradle/caches/minecraft/versions/1.8.9/1.8.9.json
+            echo "Copied 1.8.9.json from repo"
+          fi
+
       - name: Setup Gradle Wrapper
         working-directory: forge
         run: chmod +x gradlew
