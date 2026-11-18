@@ -25,11 +25,12 @@ jobs:
           # for native library resolution
           mkdir -p ~/.gradle/caches/minecraft/versions/1.8.9
 
-          # Use the version.json from the repo (which is the authoritative version)
+          # Copy the version.json from the repo to the expected cache location
           if [ -f "forge/jsons/1.8.9.json" ]; then
             cp forge/jsons/1.8.9.json ~/.gradle/caches/minecraft/versions/1.8.9/1.8.9.json
             echo "Copied 1.8.9.json to Gradle cache"
             ls -la ~/.gradle/caches/minecraft/versions/1.8.9/
+            cat ~/.gradle/caches/minecraft/versions/1.8.9/1.8.9.json | head -5
           else
             echo "ERROR: forge/jsons/1.8.9.json not found"
             exit 1
