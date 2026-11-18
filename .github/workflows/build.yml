@@ -24,6 +24,8 @@ jobs:
           # ForgeGradle 2.1 needs the vanilla 1.8.9 version.json in the cache
           # for native library resolution
           mkdir -p ~/.gradle/caches/minecraft/versions/1.8.9
+
+          # Use the version.json from the repo (which is the authoritative version)
           if [ -f "forge/jsons/1.8.9.json" ]; then
             cp forge/jsons/1.8.9.json ~/.gradle/caches/minecraft/versions/1.8.9/1.8.9.json
             echo "Copied 1.8.9.json to Gradle cache"
@@ -41,7 +43,11 @@ jobs:
         working-directory: forge
         env:
           ORG_GRADLE_PROJECT_org_gradle_jvmargs: -Xmx3G -XX:MaxPermSize=512m
-        run: ./gradlew setupCIWorkspace --no-daemon --stacktrace
+        run: |
+          cd forge
+          # Also create the version.json in the forge/jsons directory for the release process
+          cp jsons/1.8.9.json jsons/1.8.9.json.bak 2>/dev/null || true
+          ./gradlew setupCIWorkspace --no-daemon --stacktrace
 
       - name: Build
         working-directory: forge
