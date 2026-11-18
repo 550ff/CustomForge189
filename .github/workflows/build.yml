@@ -19,9 +19,34 @@ jobs:
           distribution: temurin
           java-version: 8
 
+      - name: Download Minecraft 1.8.9 version JSON
+        run: |
+          # ForgeGradle 2.1 needs the vanilla 1.8.9 version.json for inheritance
+          # Use Mojang's version manifest to get the correct URL
+          MANIFEST=$(curl -sL "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json")
+          VERSION_URL=$(echo "$MANIFEST" | grep -o '"version":"1.8.9"[^}]*"url":"[^"]*"' | grep -o 'https://[^"]*' | head -1)
+          if [ -n "$VERSION_URL" ]; then
+            curl -sL "$VERSION_URL" -o forge/jsons/1.8.9.json
+            echo "Downloaded 1.8.9.json from Mojang"
+          else
+            echo "Could not find 1.8.9 in manifest, using existing file"
+          fi
+
       - name: Setup Gradle Wrapper
         working-directory: forge
         run: chmod +x gradlew
+
+      - name: Setup CI Workspace
+        working-directory: forge
+        env:
+          ORG_GRADLE_PROJECT_org_gradle_jvmargs: -Xmx3G -XX:MaxPermSize=512m
+        run: ./gradlew setupCIWorkspace --no-daemon --stacktrace
+
+      - name: Build
+        working-directory: forge
+        env:
+          ORG_GRADLE_PROJECT_org_gradle_jvmargs: -Xmx3G -XX:MaxPermSize=512m
+        run: ./gradlew build --no-daemon --stacktrace
 
       - name: Setup CI Workspace
         working-directory: forge
