@@ -16,10 +16,7 @@ buildscript {
 }
 
 repositories {
-        maven {
-            name = "local"
-            url = "file:///home/cpw/projects/repo"
-        }
+    // Removed dead local repository - ForgeGradle 2.1 resolves all deps from mavenCentral and maven.minecraftforge.net
 }
 apply plugin: "maven"
 apply plugin: "net.minecraftforge.gradle.patcher"
