@@ -19,6 +19,22 @@ jobs:
           distribution: temurin
           java-version: 8
 
+      - name: Prepare Minecraft version cache
+        run: |
+          # ForgeGradle 2.1 needs the vanilla 1.8.9 version.json in the cache
+          # for native library resolution
+          mkdir -p ~/.gradle/caches/minecraft/versions/1.8.9
+
+          # Use the version.json from the repo (which is the authoritative version)
+          if [ -f "forge/jsons/1.8.9.json" ]; then
+            cp forge/jsons/1.8.9.json ~/.gradle/caches/minecraft/versions/1.8.9/1.8.9.json
+            echo "Copied 1.8.9.json to Gradle cache"
+            ls -la ~/.gradle/caches/minecraft/versions/1.8.9/
+          else
+            echo "ERROR: forge/jsons/1.8.9.json not found"
+            exit 1
+          fi
+
       - name: Setup Gradle Wrapper
         working-directory: forge
         run: chmod +x gradlew
