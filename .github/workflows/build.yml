@@ -49,4 +49,4 @@ jobs:
         with:
           name: forge-1.8.9-json
           path: forge/build/jsons/*.json
-          if-no-files-found: ignore# CI fix
+          if-no-files-found: ignore
