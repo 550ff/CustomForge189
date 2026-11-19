@@ -28,7 +28,7 @@ repositories {
 }
 apply plugin: "maven"
 apply plugin: "net.minecraftforge.gradle.patcher"
-apply plugin: "net.minecraftforge.gradle.launch4j"
+// apply plugin: "net.minecraftforge.gradle.launch4j" - disabled: dead 2016 HTTP download for launch4j-3.8.0-LINUX.zip
 
 minecraft {
     version = "1.8.9"
@@ -199,25 +199,13 @@ task makeMdk(type: Zip) {
 }
 tasks.build.dependsOn makeMdk
 
-// launch4j
-
-launch4j {
-    jar = installer.archivePath.canonicalPath
-    outfile = file("build/distributions/${project.name}-${project.version}-installer-win.exe").canonicalPath
-    icon = file('icon.ico').canonicalPath
-    manifest = file('l4jManifest.xml').canonicalPath
-    jreMinVersion = '1.6.0'
-    initialHeapPercent = 5;
-    maxHeapPercent = 100;
-}
-tasks.generateXmlConfig.dependsOn installer
-tasks.build.dependsOn 'launch4j'
+// launch4j disabled - avoids dead 2016 HTTP files.minecraftforge.net/launch4j download
+// installer JAR and universal JAR are built directly
 
 // MAVEN
 
 artifacts {
     archives changelog.output
-    archives file("build/distributions/${project.name}-${project.version}-installer-win.exe")
     archives makeMdk
 }
 
