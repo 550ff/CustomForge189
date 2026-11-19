@@ -23,6 +23,14 @@ import com.google.common.base.Throwables;
 
 public class FMLLaunchHandler
 {
+    static
+    {
+        if (System.getProperty("java.net.preferIPv4Stack") == null)
+        {
+            System.setProperty("java.net.preferIPv4Stack", "true");
+        }
+    }
+
     private static FMLLaunchHandler INSTANCE;
     static Side side;
     private LaunchClassLoader classLoader;

@@ -112,6 +112,15 @@ public class ForgeVersion
 
     public static void startVersionCheck()
     {
+        // Deep lightweight optimization: no-op by default to eliminate background HTTP version check threads.
+        // Can be explicitly re-enabled with -Dforge.enableVersionCheck=true or Global config.
+        if (!Boolean.getBoolean("forge.enableVersionCheck") &&
+            !ForgeModContainer.getConfig().get(ForgeModContainer.VERSION_CHECK_CAT, "Global", false).getBoolean())
+        {
+            FMLLog.log("ForgeVersionCheck", Level.INFO, "Global Forge version check system disabled by default, skipping background threads.");
+            return;
+        }
+
         new Thread("Forge Version Check")
         {
             @Override
@@ -257,14 +266,15 @@ public class ForgeVersion
 
     private static Map<ModContainer, CheckResult> results = new ConcurrentHashMap<ModContainer, CheckResult>();
     private static final CheckResult PENDING_CHECK = new CheckResult(PENDING, null, null, null);
+    private static final CheckResult UP_TO_DATE_CHECK = new CheckResult(UP_TO_DATE, null, null, null);
 
     public static CheckResult getResult(ModContainer mod)
     {
-        if (mod == null) return PENDING_CHECK;
+        if (mod == null) return UP_TO_DATE_CHECK;
         if (mod instanceof InjectedModContainer)
             mod = ((InjectedModContainer)mod).wrappedContainer;
         CheckResult ret = results.get(mod);
-        return ret == null ? PENDING_CHECK : ret;
+        return ret == null ? UP_TO_DATE_CHECK : ret;
     }
 }
 

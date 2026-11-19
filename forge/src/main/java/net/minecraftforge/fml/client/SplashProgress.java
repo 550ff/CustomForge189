@@ -181,10 +181,9 @@ public class SplashProgress
             IOUtils.closeQuietly(r);
         }
 
-        //Some system do not support this and have weird effects so we need to detect and disable by default.
-        //The user can always force enable it if they want to take the responsibility for bugs.
-        //For now macs derp so disable them.
-        boolean defaultEnabled = !System.getProperty("os.name").toLowerCase().contains("mac");
+        // Deep lightweight optimization: hard-default to false so secondary OpenGL shared-context thread
+        // is never spawned on Intel HD 2000 / low-VRAM GPUs. Can still be manually enabled via config.
+        boolean defaultEnabled = false;
 
         // Enable if we have the flag, and there's either no optifine, or optifine has added a key to the blackboard ("optifine.ForgeSplashCompatible")
         // Optifine authors - add this key to the blackboard if you feel your modifications are now compatible with this code.

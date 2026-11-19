@@ -188,6 +188,10 @@ public class FMLClientHandler implements IFMLSidedHandler
     @SuppressWarnings("unchecked")
     public void beginMinecraftLoading(Minecraft minecraft, @SuppressWarnings("rawtypes") List resourcePackList, IReloadableResourceManager resourceManager)
     {
+        if (System.getProperty("java.net.preferIPv4Stack") == null)
+        {
+            System.setProperty("java.net.preferIPv4Stack", "true");
+        }
         detectOptifine();
         SplashProgress.start();
         client = minecraft;
@@ -347,6 +351,9 @@ public class FMLClientHandler implements IFMLSidedHandler
         }
         loading = false;
         client.gameSettings.loadOptions(); //Reload options to load any mod added keybindings.
+        // Deep lightweight optimization: post-resource-reload cleanup hint to reclaim unbaked model memory on 4GB systems
+        net.minecraftforge.client.model.ModelLoaderRegistry.clearModelCache();
+        System.gc();
     }
 
     public void extendModList()

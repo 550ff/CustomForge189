@@ -144,6 +144,15 @@ public class ModelLoader extends ModelBakery
                 bakedRegistry.putObject(e.getKey(), e.getValue().bake(e.getValue().getDefaultState(), DefaultVertexFormats.ITEM, DefaultTextureGetter.instance));
             }
         }
+        isLoading = false;
+        // Deep lightweight optimization: clear temporary unbaked models, sprite/texture sets,
+        // and loading exceptions to free peak RAM on 4GB systems after baking is complete.
+        stateModels.clear();
+        textures.clear();
+        loadingModels.clear();
+        missingVariants.clear();
+        loadingExceptions.clear();
+        ModelLoaderRegistry.clearModelCache();
         return bakedRegistry;
     }
 

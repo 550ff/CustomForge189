@@ -245,7 +245,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
         config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
 
         propOrder = new ArrayList<String>();
-        prop = config.get(VERSION_CHECK_CAT, "Global", true, "Enable the entire mod update check system. This only applies to mods using the Forge system.");
+        prop = config.get(VERSION_CHECK_CAT, "Global", false, "Enable the entire mod update check system. This only applies to mods using the Forge system.");
         propOrder.add("Global");
 
         config.setCategoryPropertyOrder(VERSION_CHECK_CAT, propOrder);
