@@ -26,15 +26,15 @@ import json, sys
 for f in ['forge/jsons/1.8.9-dev.json', 'forge/jsons/1.8.9-rel.json']:
     data = json.load(open(f))
     if 'inheritsFrom' in data:
-        print(f'ERROR: {f} contains inheritsFrom - must be self-contained')
+        print('ERROR: {} contains inheritsFrom - must be self-contained'.format(f))
         sys.exit(1)
     if 'forgemodifier' in str(data):
-        print(f'ERROR: {f} contains forgemodifier - invalid')
+        print('ERROR: {} contains forgemodifier - invalid'.format(f))
         sys.exit(1)
     if 'jar' in data:
-        print(f'ERROR: {f} contains jar field - must be self-contained')
+        print('ERROR: {} contains jar field - must be self-contained'.format(f))
         sys.exit(1)
-    print(f'OK: {f} is valid and self-contained')
+    print('OK: {} is valid and self-contained'.format(f))
 "
 
       - name: Prepare Minecraft version cache
