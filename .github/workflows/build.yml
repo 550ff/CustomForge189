@@ -21,21 +21,21 @@ jobs:
 
       - name: Validate JSON files
         run: |
-          python3 -c "
-import json, sys
-for f in ['forge/jsons/1.8.9-dev.json', 'forge/jsons/1.8.9-rel.json']:
-    data = json.load(open(f))
-    if 'inheritsFrom' in data:
-        print('ERROR: {} contains inheritsFrom - must be self-contained'.format(f))
-        sys.exit(1)
-    if 'forgemodifier' in str(data):
-        print('ERROR: {} contains forgemodifier - invalid'.format(f))
-        sys.exit(1)
-    if 'jar' in data:
-        print('ERROR: {} contains jar field - must be self-contained'.format(f))
-        sys.exit(1)
-    print('OK: {} is valid and self-contained'.format(f))
-"
+          for f in forge/jsons/1.8.9-dev.json forge/jsons/1.8.9-rel.json; do
+            if grep -q '"inheritsFrom"' "$f"; then
+              echo "ERROR: $f contains inheritsFrom - must be self-contained"
+              exit 1
+            fi
+            if grep -q '"jar":' "$f"; then
+              echo "ERROR: $f contains jar field - must be self-contained"
+              exit 1
+            fi
+            if grep -q 'forgemodifier' "$f"; then
+              echo "ERROR: $f contains forgemodifier - invalid"
+              exit 1
+            fi
+            echo "OK: $f is valid and self-contained"
+          done
 
       - name: Prepare Minecraft version cache
         run: |
