@@ -16,7 +16,15 @@ buildscript {
 }
 
 repositories {
-    // Removed dead local repository - ForgeGradle 2.1 resolves all deps from mavenCentral and maven.minecraftforge.net
+    mavenCentral()
+    maven {
+        name = "forge"
+        url = "https://maven.minecraftforge.net"
+    }
+    maven {
+        name = "minecraft"
+        url = "https://libraries.minecraft.net/"
+    }
 }
 apply plugin: "maven"
 apply plugin: "net.minecraftforge.gradle.patcher"
@@ -370,4 +378,5 @@ String getVersionFromJava(File file)
 // re-add old tasks for jenkins compat
 // should be remvoed, and the jenkisn fixed when no longer building with FG 1.2
 task setupForge { dependsOn 'setup' }
+task setupCIWorkspace { dependsOn 'setup' }
 task buildPackages { dependsOn 'build' }
