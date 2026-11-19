@@ -19,7 +19,6 @@
     "mainClass": "net.minecraft.launchwrapper.Launch",
     "minimumLauncherVersion": 14,
     "assets": "1.8",
-    "jar": "1.8.9",
     "libraries": [
       {
         "name": "@artifact@",
