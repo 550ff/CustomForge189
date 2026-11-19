@@ -42,8 +42,10 @@ jobs:
           # ForgeGradle 2.1 needs the vanilla 1.8.9 version.json in the cache
           # for native library resolution
           mkdir -p ~/.gradle/caches/minecraft/versions/1.8.9
+          mkdir -p ~/.gradle/caches/minecraft/versionJsons
           if [ -f "forge/jsons/1.8.9.json" ]; then
             cp forge/jsons/1.8.9.json ~/.gradle/caches/minecraft/versions/1.8.9/1.8.9.json
+            cp forge/jsons/1.8.9.json ~/.gradle/caches/minecraft/versionJsons/1.8.9.json
             echo "Copied 1.8.9.json to Gradle cache"
           else
             echo "ERROR: forge/jsons/1.8.9.json not found"

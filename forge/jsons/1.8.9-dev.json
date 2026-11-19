@@ -3,6 +3,13 @@
   "time": "@timestamp@",
   "releaseTime": "1960-01-01T00:00:00-0700",
   "type": "release",
+  "assetIndex": {
+    "id": "1.8",
+    "sha1": "774eb5666e11859b6944c543988787a9807c076b",
+    "size": 78283,
+    "totalSize": 114842097,
+    "url": "https://launchermeta.mojang.com/v1/packages/774eb5666e11859b6944c543988787a9807c076b/1.8.json"
+  },
   "minecraftArguments": "--version FML_DEV --tweakClass net.minecraftforge.fml.common.launcher.FMLTweaker",
   "libraries": [
     {
