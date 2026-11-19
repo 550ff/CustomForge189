@@ -72,11 +72,12 @@ jobs:
         run: ./gradlew build --no-daemon --stacktrace
 
       - name: Upload Artifacts
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: forge-1.8.9-build
-          path: forge/build/libs/*.jar
+          path: |
+            forge/build/distributions/*.jar
+            forge/build/distributions/*.zip
           if-no-files-found: error
 
       - name: Upload Version JSON
